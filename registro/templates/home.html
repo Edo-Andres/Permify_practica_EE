@@ -1,9 +1,21 @@
 {% extends 'base.html' %} {% block content %}
     <div class="container text-center">
-        <h1>Home</h1>
-    <a href="{% url 'signup' %}" button type="button" class="btn btn-primary" >Gerente</button> </a>
-    <a href="{% url 'signup' %}" button type="button" class="btn btn-primary" >Empleado</button> </a>
+        <h1>Home</h1><br><br>
+       <div>
+        <a href="{% url 'signup' %}" button type="button" class="btn btn-primary" >Gerente</button> </a>
+        <a href="{% url 'signup' %}" button type="button" class="btn btn-primary" >Empleado</button> </a>
+       </div> 
+    
 
     </div>
+
+    <style>
+        @media only screen and (max-width: 600px) {
+        .btn-primary {
+                width: 80%;
+                margin-top: 10px;
+            }
+        }
+        </style>
     
 {% endblock %}

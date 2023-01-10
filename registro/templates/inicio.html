@@ -1,9 +1,19 @@
 {% extends 'base.html' %} {% block content %}
     <div class="container text-center">
-       <h1>Inicio</h1>
-    <a href="#" button type="button" class="btn btn-primary" >Diario</button> </a>
-    <a href="#" button type="button" class="btn btn-primary" >Semanal</button> </a>
+       <h1>Inicio</h1><br>
+       <div>
+        <a href="#" button type="button" class="btn btn-primary" >Diario</button> </a>
+        <a href="#" button type="button" class="btn btn-primary" >Semanal</button> </a>
+       </div>    
 
     </div>
+    <style>
+        @media only screen and (max-width: 600px) {
+        .btn-primary {
+                width: 80%;
+                margin-top: 10px;
+            }
+        }
+        </style>
     
 {% endblock %}
