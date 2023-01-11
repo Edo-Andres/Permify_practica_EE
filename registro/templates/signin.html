@@ -1,19 +1,14 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container text-center">
-  <h1>Signin</h1>
-
-  <p>
-    {{error}}
-  </p>
-
-
-  <form action="/signin/" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button>
-      Signin
-    </button>
-  </form>
+<div class="container text-center mt-5">
+  {{error}}  
+    <div class= style="width: 75%; margin: auto;">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+        <a href="{% url 'signup' %}" class="link">Registrar </a>
+      </form>
+    </div>
 </div>
 
 {% endblock %}
