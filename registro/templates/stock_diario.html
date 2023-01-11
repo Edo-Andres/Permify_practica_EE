@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block content %}
+    <div class="container text-center">
+        <h1>Stock Diario</h1><br><br>
+       <div>
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>id_medicamento</th>
+                <th>sucursal</th>
+                <th>sku</th>
+                <th>laboratorio</th>
+                <th>marca</th>
+                <th>nombre_medicamento</th>
+                <th>medida_medicamento</th>
+                <th>cantidad_comprimidos</th>
+                <th>tipo_farmaco</th>
+                <th>recomendacion</th>
+                <th>via_ingesta</th>
+                <th>forma_farmaceutica</th>
+                <th>stockSistema</th>
+                <th>stockDiario</th>
+                <th>timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>san bernardo</td>
+                <td>12dd2</td>
+                <td>ispch</td>
+                <td>neo</td>
+                <td>desloratadina</td>
+                <td>12</td>
+                <td>12</td>
+                <td>pastilla</td>
+                <td>1 al dia</td>
+                <td>oral</td>
+                <td>pastilla</td>
+                <td>12</td>
+                <td>postman</td>
+                <td>2023-01-11T15:37:06.340288-03:00</td>
+              </tr>
+            </tbody>
+          </table>
+          
+       </div> 
+    
+
+    </div>
+
+    <style>
+        @media only screen and (max-width: 600px) {
+        .btn-primary {
+                width: 80%;
+                margin-top: 10px;
+            }
+        }
+        </style>
+    
+{% endblock %}
