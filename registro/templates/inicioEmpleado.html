@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block content %}
+
+    
+<div class="container text-center">
+       <h1>Inicio Empleado</h1><br>
+       <form>
+        <div class="form-group">
+          <label for="radioGroup">Selecciona opción Stock:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioGroup" id="radio1" value="Diario" checked>
+            <label class="form-check-label" for="radio1">Diario</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioGroup" id="radio2" value="Semanal">
+            <label class="form-check-label" for="radio2">Semanal</label>
+          </div>
+          
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="select">Selecciona Sucursal:</label>
+          <select class="form-control text-center" id="select">
+            <option disabled selected>Selecciona una Sucursal</option>
+            <option>Sucursal 1</option>
+            <option>Sucursal 2</option>
+            <option>Sucursal 3</option>
+          </select>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Ir</button>
+      </form>
+
+      <a href="{% url 'diario' %}">stockDiario</a>
+
+         
+
+    </div>
+    <style>
+        @media only screen and (max-width: 600px) {
+        .btn-primary {
+                width: 80%;
+                margin-top: 10px;
+            }
+        }
+        </style>
+
+        
+{% endblock %}

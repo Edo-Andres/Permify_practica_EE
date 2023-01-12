@@ -1,78 +1,30 @@
 {% extends 'base.html' %} {% block content %}
     <div class="container text-center">
         <h1>Stock Diario</h1><br><br>
-       <div>
-        <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                
-                <th>sku</th>
-                <th>laboratorio</th>
-                <th>marca</th>
-                <th>nombre_medicamento</th>
-                
-                <th>cantidad_comprimidos</th>
-                <th>tipo_farmaco</th>                
-                
-                <th>stockSistema</th>
-                <th>stockDiario</th>
-                <th>timestamp</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                
-                <td>12dd2</td>
-                <td>ispch</td>
-                <td>neo</td>
-                <td>desloratadina</td>
-                
-                <td>12</td>
-                <td>pastilla</td>                
-                
-                <td>12</td>
-                <td><input type="text" name="stockDiario" value="postman"></td>
-                <td>2023-01-11T15:37:06.340288-03:00</td>
-              </tr>
-            </tbody>
-
-            <tbody>
-              <tr>
-                
-                <td>12dd2</td>
-                <td>ispch</td>
-                <td>neo</td>
-                <td>desloratadina</td>
-                
-                <td>12</td>
-                <td>pastilla</td>                
-                
-                <td>12</td>
-                <td><input type="text" name="stockDiario" value="postman"></td>
-                <td>2023-01-11T15:37:06.340288-03:00</td>
-              </tr>
-            </tbody>
-
-            <tbody>
-              <tr>
-                
-                <td>12dd2</td>
-                <td>ispch</td>
-                <td>neo</td>
-                <td>desloratadina</td>
-                
-                <td>12</td>
-                <td>pastilla</td>                
-                
-                <td>12</td>
-                <td><input type="text" name="stockDiario" value="postman"></td>
-                <td>2023-01-11T15:37:06.340288-03:00</td>
-              </tr>
-            </tbody>
-            
+        <form action="#" method="post">
+        
+          {% csrf_token %}
+          <table class="table">
+              <thead class="thead-dark">
+                  <tr>
+                      <th>sku</th>
+                      <th>nombre_medicamento</th>
+                      <th>stockDiario</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for medicamento in medicamentos %}
+                  <tr>
+                      <td>{{ medicamento.sku }}</td>
+                      <td>{{ medicamento.nombre_medicamento }}</td>
+                      <td><input type="text" name="stockDiario" value="{{ medicamento.stockDiario }}"></td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
           </table>
-          
-       </div> 
+          <input type="submit" value="Actualizar stock">
+      </form>
+      
     
 
     </div>

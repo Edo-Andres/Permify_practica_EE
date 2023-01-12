@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+import requests
 
 
 
@@ -18,7 +19,7 @@ def signup(request):
                     request.POST["username"], password=request.POST["password1"])
                 user.save()
                 login(request, user)
-                return redirect('signup')
+                return redirect('inicioEmpleado')
             except IntegrityError:
                 return render(request, 'signup.html', {"form": UserCreationForm, "error": "Username already exists."})
 
@@ -28,13 +29,34 @@ def home(request):
     return render(request, 'home.html')
 
 def diario(request):
-    return render(request, 'stock_diario.html')
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    response = requests.get(url)
+    data = response.json()
+    context = {'medicamentos': data}
+    return render(request, 'stock_diario.html', context)
 
 def semanal(request):
     return render(request, 'stock_semanal.html')
 
-def inicio(request):
-    return render(request, 'inicio.html')
+def inicioEmpleado(request):
+    if request.method == 'GET':
+        return render(request, 'inicioEmpleado.html')
+    else:
+        radio_value = request.POST('radioGroup')
+        if radio_value == "Diario":
+            return redirect('diario')
+        elif radio_value == "Semanal":
+            return redirect('semanal')
+
+def inicioGerente(request):
+    pass
+
+# def my_view(request):
+#     radio_value = request.POST.get('radioGroup')
+#     if radio_value == "Diario":
+#         return redirect('diario')
+#     elif radio_value == "Semanal":
+#         return redirect('semanal')
 
 def signin(request):
     if request.method == 'GET':
@@ -46,5 +68,5 @@ def signin(request):
             return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
 
         login(request, user)
-        return redirect('inicio')
+        return redirect('inicioEmpleado')
         
