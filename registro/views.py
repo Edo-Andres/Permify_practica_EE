@@ -30,6 +30,8 @@ def home(request):
 def diario(request):
     return render(request, 'stock_diario.html')
 
+def semanal(request):
+    return render(request, 'stock_semanal.html')
 
 def inicio(request):
     return render(request, 'inicio.html')
