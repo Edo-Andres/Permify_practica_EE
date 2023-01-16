@@ -26,4 +26,6 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('diario/', views.diario, name='diario'),
     path('semanal/', views.semanal, name='semanal'),
+    path('update_stock/', views.update_stock, name='update_stock'),
+    path('putDiario/', views.putDiario, name='putDiario'),
 ]

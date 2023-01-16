@@ -1,29 +1,42 @@
 {% extends 'base.html' %} {% block content %}
+
     <div class="container text-center">
         <h1>Stock Diario</h1><br><br>
-        <form action="#" method="post">
         
-          {% csrf_token %}
-          <table class="table">
-              <thead class="thead-dark">
-                  <tr>
-                      <th>sku</th>
-                      <th>nombre_medicamento</th>
-                      <th>stockDiario</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for medicamento in medicamentos %}
-                  <tr>
-                      <td>{{ medicamento.sku }}</td>
-                      <td>{{ medicamento.nombre_medicamento }}</td>
-                      <td><input type="text" name="stockDiario" value="{{ medicamento.stockDiario }}"></td>
-                  </tr>
-                  {% endfor %}
-              </tbody>
-          </table>
-          <input type="submit" value="Actualizar stock">
-      </form>
+        
+            
+                
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>sku</th>
+                            <th>nombre_medicamento</th>
+                            <th>stockDiario</th>
+                            <th>Actualizar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for medicamento in medicamentos %}
+                        <form action="{% url 'putDiario' %}" method="post">
+                          {% csrf_token %}
+                            <tr>
+                                <td>{{ medicamento.sku }}</td>
+                                <td>{{ medicamento.nombre_medicamento }}</td>
+                                <td>
+                                    <input type="text" name="stockDiario_{{medicamento.id_medicamento}}" value="{{ medicamento.stockDiario }}">
+                                    <input type="hidden" name="medicamento_id" value="{{medicamento.id_medicamento}}">
+                                </td>
+                                <td><input type="submit" value="Actualizar"></td>
+                            </tr>
+                          </form>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            
+
+            
+        
+          
       
     
 
@@ -36,6 +49,92 @@
                 margin-top: 10px;
             }
         }
-        </style>
+               
+    </style>
+
+<script>
+  async function updateStock(medicamento_id, new_stock) {
+      const url = `https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${medicamento_id}/`;
+      const data = {stockDiario: new_stock};
+      try {
+          const response = await fetch(url, {
+              method: 'PUT',
+              body: JSON.stringify(data),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+          if (response.status === 200) {
+              console.log('Stock actualizado.');
+          } else {
+              console.error('Error al actualizar el stock.');
+          }
+      } catch (error) {
+          console.error(error);
+      }
+  }
+</script>
     
+    <!-- <script>
+        function updateStock(event) {
+  event.preventDefault();
+  // Obtener valores de los campos del formulario
+  const formData = new FormData(event.target);
+  const id = formData.get('medicamento_id');
+  const stockDiario = formData.get(`stockDiario_${id}`);
+  console.log(stockDiario)
+
+  // Enviar petición PUT a la API utilizando fetch
+  fetch(`https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${id}/`, {
+    method: 'PUT',
+    body: JSON.stringify({stockDiario: stockDiario}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      // Si la actualización fue exitosa, mostrar mensaje de éxito
+      alert("Stock actualizado con éxito");
+    } else {
+      // Si hubo un error, mostrar mensaje de error
+      alert("Error al actualizar el stock");
+    }
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+    </script> -->
+
+    <!-- <script>
+        import axios from 'axios'
+        function updateStock() {
+  // Obtener valores de los campos del formulario
+  const formData = new FormData(event.target);
+  const id = formData.get('medicamento_id');
+  const stockDiario = formData.get(`stockDiario_${id}`);
+  console.log(stockDiario)
+
+  // Enviar petición PUT a la API utilizando axios
+    axios.put(`https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${id}/`, {
+    stockDiario: stockDiario
+  })
+  .then(response => {
+    if (response.status === 200) {
+      // Si la actualización fue exitosa, mostrar mensaje de éxito
+      alert("Stock actualizado con éxito");
+    } else {
+      // Si hubo un error, mostrar mensaje de error
+      alert("Error al actualizar el stock");
+    }
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+    </script>
+     -->
 {% endblock %}
