@@ -1,0 +1,24 @@
+
+
+{% extends 'base.html' %} {% block content %}
+<div class="container text-center mt-5">
+    <div>
+        <label>Selecciona Sucursal:</label>
+    </div>
+    <form action="{% url 'diarioSucursal' %}" method="POST">
+        {% csrf_token %}
+        <select name="sucursal">
+            {% for sucursal in sucursales %}
+            <option value="{{ sucursal }}">{{ sucursal }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+    
+    
+    
+</div>
+
+{% endblock %}
