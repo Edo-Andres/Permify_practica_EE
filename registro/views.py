@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 import requests
 import json
+from django.urls import reverse
+import time
+
 
 
 
@@ -33,27 +36,26 @@ def home(request):
 def tipoStock(request):
     return render(request, 'tipoStock.html')
 
+
 def putDiario(request):
-    
-    if request.method == 'GET':
-        url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
-        response = requests.get(url)
-        data = response.json()
-        context = {'medicamentos': data}
-        return render(request, 'stock_diario.html', context)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         medicamento_id = request.POST.get('medicamento_id')
-        print(medicamento_id)
+        sucursal = request.POST.get('sucursal')
+        print(medicamento_id)   
+        print(sucursal)
         url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/{medicamento_id}/'
         new_stock = request.POST.get(f'stockDiario_{medicamento_id}')
         data = {'stockDiario': new_stock}
         response = requests.put(url, data=data)
-
         if response.status_code == 200:
-            return redirect('http://127.0.0.1:8000/diarioSucursal/?sucursal=Sucursal 3')
+            url2 = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
+            response2 = requests.get(url2)
+            data2 = json.loads(response2.text)
+            return render(request, 'stock_diario.html', {'medicamentos': data2})
         else:
             print(response.text)
             return render(request, 'inicioEmpleado.html')
+
 
 def diario(request):
 

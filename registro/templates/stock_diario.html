@@ -6,12 +6,12 @@
         
             
                 
-                <table class="table">
+                <table class="table-responsive">
                     <thead class="thead-dark">
                         <tr>
                             <th>sku</th>
-                            <th>nombre_medicamento</th>
-                            <th>stockDiario</th>
+                            <th>medicamento</th>
+                            <th class="col-3 px-2">stockDiario</th>
                             <th>Actualizar</th>
                         </tr>
                     </thead>
@@ -22,9 +22,10 @@
                             <tr>
                                 <td>{{ medicamento.sku }}</td>
                                 <td>{{ medicamento.nombre_medicamento }}</td>
-                                <td>
-                                    <input type="text" name="stockDiario_{{medicamento.id_medicamento}}" value="{{ medicamento.stockDiario }}">
+                                <td class="col-3 px-2">
+                                    <input class="form-control" type="text" name="stockDiario_{{medicamento.id_medicamento}}" value="{{ medicamento.stockDiario }}">
                                     <input type="hidden" name="medicamento_id" value="{{medicamento.id_medicamento}}">
+                                    <input type="hidden" name="sucursal" value="{{medicamento.sucursal}}">
                                 </td>
                                 <td><input type="submit" value="Actualizar"></td>
                             </tr>
