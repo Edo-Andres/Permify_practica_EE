@@ -6,7 +6,7 @@ from django.db import IntegrityError
 import requests
 import json
 from django.urls import reverse
-import time
+from datetime import datetime
 
 
 
@@ -41,11 +41,16 @@ def putDiario(request):
     if request.method == 'POST':
         medicamento_id = request.POST.get('medicamento_id')
         sucursal = request.POST.get('sucursal')
+        fecha_actu_stock = request.POST.get('fecha_actu_stock')
         print(medicamento_id)   
         print(sucursal)
+        print(fecha_actu_stock)
         url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/{medicamento_id}/'
         new_stock = request.POST.get(f'stockDiario_{medicamento_id}')
-        data = {'stockDiario': new_stock}
+        now = datetime.now()
+        new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
+        data = {'stockDiario': new_stock, 'fecha_actu_stock': new_fecha}
+        
         response = requests.put(url, data=data)
         if response.status_code == 200:
             url2 = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
@@ -103,7 +108,7 @@ def inicioEmpleado(request):
             return redirect('semanal')
 
 def inicioGerente(request):
-    pass
+    return render(request, 'inicioGerente.html')
 
 def update_stock(request):
     return redirect('diario')

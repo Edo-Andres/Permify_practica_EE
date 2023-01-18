@@ -20,12 +20,15 @@
         <h1>App Voz Parkinson</h1>
     </div>
 
-	<div class="d-flex align-items-center">
-		<div class="container-fluid">
-			{% block content %}
-			{% endblock %}
+	<!-- <div class="d-flex align-items-center"> -->
+		<div class="content">
+			<div class="d-flex align-items-center">
+				{% block content %}
+				{% endblock %}
+			</div>
 		</div>
-	 </div>
+		
+	 <!-- </div> -->
 	    
    
 	<footer class="footer text-faded text-center py-5 fixed-bottom">
@@ -60,3 +63,9 @@
 	
 </body>
 </html>
+<style>
+	.content {
+  height: 80vh;
+}
+
+</style>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-    <div class="container text-center">
+    <div class="container text-center" id="lista">
         <h1>Stock Diario</h1><br><br>
         
         
@@ -12,7 +12,8 @@
                             <th>sku</th>
                             <th>medicamento</th>
                             <th class="col-3 px-2">stockDiario</th>
-                            <th>Actualizar</th>
+                            <th>Actualizado</th>
+                            <!-- <th>Actualizar</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -26,20 +27,20 @@
                                     <input class="form-control" type="text" name="stockDiario_{{medicamento.id_medicamento}}" value="{{ medicamento.stockDiario }}">
                                     <input type="hidden" name="medicamento_id" value="{{medicamento.id_medicamento}}">
                                     <input type="hidden" name="sucursal" value="{{medicamento.sucursal}}">
+                                    <input class="update-btn" type="submit" value="Actualizar">
                                 </td>
-                                <td><input type="submit" value="Actualizar"></td>
+                                <td>{{ medicamento.fecha_actu_stock }}</td>
+                                <!-- <td><input type="submit" value="Actualizar"></td> -->                               
+
                             </tr>
                           </form>
                         {% endfor %}
                     </tbody>
+                    
                 </table>
-            
-
-            
-        
-          
-      
-    
+                <div>
+                  <button id="update-all-btn" onclick="updateAll()">Actualizar Todo</button>
+                </div>
 
     </div>
 
@@ -50,10 +51,37 @@
                 margin-top: 10px;
             }
         }
+
+        .update-btn {
+        display: none;
+        }
+
+        #lista{
+        margin-bottom: 35%;
+        }
+
+
                
     </style>
 
 <script>
+
+function updateAll() {
+  const updateBtns = document.querySelectorAll('.update-btn');
+  let i = 0;
+
+  function update() {
+    if (i < updateBtns.length) {
+      updateBtns[i].click();
+      i++;
+      setTimeout(update, 200);
+    }
+  }
+  update();
+}
+
+
+
   async function updateStock(medicamento_id, new_stock) {
       const url = `https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${medicamento_id}/`;
       const data = {stockDiario: new_stock};
