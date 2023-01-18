@@ -2,7 +2,7 @@
 
     <div class="container text-center">
         <h1>Stock Diario</h1><br><br>
-        
+        <h1>{{sucursal}}</h1>
         
             
                 
@@ -25,6 +25,7 @@
                                 <td>
                                     <input type="text" name="stockDiario_{{medicamento.id_medicamento}}" value="{{ medicamento.stockDiario }}">
                                     <input type="hidden" name="medicamento_id" value="{{medicamento.id_medicamento}}">
+                                    <input type="hidden" name="sucursal" value="{{sucursal}}">
                                 </td>
                                 <td><input type="submit" value="Actualizar"></td>
                             </tr>

@@ -27,8 +27,8 @@ urlpatterns = [
     path('diario/', views.diario, name='diario'),
     path('semanal/', views.semanal, name='semanal'),
     path('update_stock/', views.update_stock, name='update_stock'),
+    path('diarioSucursal/', views.diarioSucursal, name='diarioSucursal'),
     path('putDiario/', views.putDiario, name='putDiario'),
     path('sucursales/', views.get_sucursales, name='sucursales'),
     path('tipoStock/', views.tipoStock, name='tipoStock'),
-    path('diarioSucursal/', views.diarioSucursal, name='diarioSucursal'),
 ]

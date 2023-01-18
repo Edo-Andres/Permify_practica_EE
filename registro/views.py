@@ -1,7 +1,9 @@
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.db import IntegrityError
 import requests
 import json
@@ -32,6 +34,16 @@ def home(request):
 
 def tipoStock(request):
     return render(request, 'tipoStock.html')
+    
+#debo llegar aqui
+def diarioSucursal(request):
+    if request.method == 'POST':
+        sucursal = request.POST.get('sucursal')
+        url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
+        response = requests.get(url)
+        data = json.loads(response.text)
+        return render(request, 'stock_diario.html', {'medicamentos': data,'sucursal':sucursal})
+        
 
 def putDiario(request):
     
@@ -41,18 +53,28 @@ def putDiario(request):
         data = response.json()
         context = {'medicamentos': data}
         return render(request, 'stock_diario.html', context)
+
     elif request.method == 'POST':
         medicamento_id = request.POST.get('medicamento_id')
+        sucursal = request.POST.get('sucursal')
         print(medicamento_id)
+        print("la sucursal es: ", request.POST.get('sucursal'))
         url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/{medicamento_id}/'
         new_stock = request.POST.get(f'stockDiario_{medicamento_id}')
         data = {'stockDiario': new_stock}
         response = requests.put(url, data=data)
 
         if response.status_code == 200:
-            return redirect('http://127.0.0.1:8000/diarioSucursal/?sucursal=Sucursal 3')
+            #return redirect(to='putDiario')
+            #return HttpResponseRedirect(reverse('https://vozparkinson.pythonanywhere.com/apis/medicamento_full/', args=(medicamento_id,)))
+            url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
+            response = requests.get(url)
+            data = json.loads(response.text)
+            return render(request, 'stock_diario.html', {'medicamentos': data})
+            #return render(request, 'stock_diario.html', context)
+            #print(response.text)
+
         else:
-            print(response.text)
             return render(request, 'inicioEmpleado.html')
 
 def diario(request):
@@ -71,13 +93,7 @@ def obtener_medicamentos(request):
         data = json.loads(response.text)
         return render(request, 'stock_diario.html', {'medicamentos': data})
 
-def diarioSucursal(request):
-    if request.method == 'POST':
-        sucursal = request.POST.get('sucursal')
-        url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
-        response = requests.get(url)
-        data = json.loads(response.text)
-        return render(request, 'stock_diario.html', {'medicamentos': data})
+
 
 # def diarioSucursal(request):
 #     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
@@ -110,6 +126,7 @@ def get_sucursales(request):
     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
     response = requests.get(url)
     data = json.loads(response.text)
+    #set() crea conjuntos de datos
     sucursales = set()
     for item in data:
         sucursales.add(item['sucursal'])
