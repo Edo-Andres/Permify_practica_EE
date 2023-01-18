@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container text-center mt-5">
+    
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Página en Mantenimiento</title>
+      <style>
+        /* Estilos para dispositivos móviles */
+        @media only screen and (max-width: 600px) {
+          .container {
+            width: 90%;
+            margin: 0 auto;
+          }
+          .main-content {
+            text-align: center;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="main-content">
+          <h1>Lamentamos los inconvenientes.</h1>
+          <p>Estamos realizando tareas de mantenimiento en este momento. Por favor, vuelve a intentarlo más tarde.</p>
+          <button onclick="goBack()">Volver</button>
+        </div>
+      </div>
+    
+      <script>
+        function goBack() {
+          window.history.back();
+        }
+      </script>
+    </body>
+    
+    
+</div>
+
+{% endblock %}
