@@ -31,4 +31,6 @@ urlpatterns = [
     path('sucursales/', views.get_sucursales, name='sucursales'),
     path('tipoStock/', views.tipoStock, name='tipoStock'),
     path('diarioSucursal/', views.diarioSucursal, name='diarioSucursal'),
+    path('signout/', views.signout, name='signout'),
+
 ]
