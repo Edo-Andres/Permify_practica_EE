@@ -14,10 +14,19 @@
 </head>
 <body>
 	<!-- <a href="javascript:history.back()"> Volver Atrás</a> -->
-	<div style="position: relative;	left: 7px;	top: 1px;">
+
+	<!-- <div style="position: relative;	left: 7px;	top: 1px;">
 		<a href="{% url 'home' %}"> Inicio</i></a>
+	</div> -->
+
+	<div>
+		<form action="{% url 'signout' %}" method="post">
+			{% csrf_token %}
+			<input class="btn" type="submit" value="Cerrar Sesión">
+		</form>
 	</div>
-    <div class="container-fluid text-center">
+	
+    <div class="container-fluid text-center mt-5">
         <h1>App Voz Parkinson</h1>
     </div>
 
@@ -31,7 +40,7 @@
 		
 	 <!-- </div> -->
 	    
-   <div id="footer">
+   <!-- <div id="footer">
 	<footer class="footer text-faded text-center py-5 fixed-bottom">
 		<div class="container" style="position: relative; bottom: 1; width: 100%;">
 			<p class="m-0">
@@ -61,11 +70,11 @@
 			<p class="m-0 mbt1">&copy; Proyecto 2023</p>
 		</div>
 	</footer>
-  </div>
+  </div> -->
 </body>
 </html>
 
-<style>
+<!-- <style>
  .content {
     position: relative;
     height: 80vh;
@@ -75,4 +84,6 @@
     bottom: 0;
     width: 100%;
   }
-</style>
+</style> -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/[email protected]/dist/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>

@@ -84,7 +84,7 @@ def diarioSucursal(request):
         url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
         response = requests.get(url)
         data = json.loads(response.text)
-        return render(request, 'stock_diario.html', {'medicamentos': data, 'sucursal':sucursal})
+        return render(request, 'stock_diario.html', {'medicamentos': data, 'sucursal':sucursal, 'user':request.user})
 
 # def diarioSucursal(request):
 #     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
@@ -141,3 +141,7 @@ def signin(request):
         login(request, user)
         return redirect('tipoStock')
         
+
+def signout(request):
+    logout(request)
+    return redirect('home')
