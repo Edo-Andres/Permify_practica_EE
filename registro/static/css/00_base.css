@@ -1,0 +1,9 @@
+.content {
+    position: relative;
+    height: 80vh;
+  }
+  #footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
