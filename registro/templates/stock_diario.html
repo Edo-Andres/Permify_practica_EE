@@ -1,18 +1,20 @@
 {% extends 'base.html' %} {% block content %}
 
     <div class="container text-center" id="lista">
-        <h1>Stock Diario</h1><br><br>
-        
-        
-            
+      <div>
+        <h3>Stock Diario</h3>
+        <h4>{{ sucursal }}</h4>
+        <h6>{{ usuario }}</h6>
+      </div>
                 
+        <div class="container text-center">
                 <table class="table-responsive">
                     <thead class="thead-dark">
                         <tr>
-                            <th>sku</th>
-                            <th>medicamento</th>
-                            <th class="col-3 px-2">stockDiario</th>
-                            <th>Actualizado</th>
+                            <th class="col-3">sku</th>
+                            <th class="col-3">medicamento</th>
+                            <th class="col-2 px-2">stockDiario</th>
+                            <th class="col-3">Actualizado</th>
                             <!-- <th>Actualizar</th> -->
                         </tr>
                     </thead>
@@ -23,8 +25,8 @@
                             <tr>
                                 <td>{{ medicamento.sku }}</td>
                                 <td>{{ medicamento.nombre_medicamento }}</td>
-                                <td class="col-3 px-2">
-                                    <input class="form-control" type="text" name="stockDiario_{{medicamento.id_medicamento}}" value="{{ medicamento.stockDiario }}">
+                                <td>
+                                    <input class="form-control text-center" type="text" name="stockDiario_{{medicamento.id_medicamento}}" value="{{ medicamento.stockDiario }}">
                                     <input type="hidden" name="medicamento_id" value="{{medicamento.id_medicamento}}">
                                     <input type="hidden" name="sucursal" value="{{medicamento.sucursal}}">
                                     <input class="update-btn" type="submit" value="Actualizar">
@@ -38,6 +40,7 @@
                     </tbody>
                     
                 </table>
+              </div>
                 <div>
                   <button id="update-all-btn" onclick="updateAll()">Actualizar Todo</button>
                 </div>
@@ -58,12 +61,22 @@
 
         #lista{
         margin-bottom: 35%;
+
         }
+        h3{
+        padding: 0;
+        margin: 0;      
+        }
+        h4{
+          margin-top: 0;
+          padding: 0;
+        } 
+
 
 
                
     </style>
-
+    
 <script>
 
 function updateAll() {

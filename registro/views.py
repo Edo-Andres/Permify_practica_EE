@@ -84,7 +84,7 @@ def diarioSucursal(request):
         url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
         response = requests.get(url)
         data = json.loads(response.text)
-        return render(request, 'stock_diario.html', {'medicamentos': data})
+        return render(request, 'stock_diario.html', {'medicamentos': data, 'sucursal':sucursal})
 
 # def diarioSucursal(request):
 #     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
