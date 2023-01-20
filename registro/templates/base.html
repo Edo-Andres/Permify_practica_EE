@@ -22,13 +22,17 @@
 	<div>
 		<form action="{% url 'signout' %}" method="post">
 			{% csrf_token %}
-			<input class="btn" type="submit" value="Cerrar Sesión">
+			<input class="btn btn-danger btn-sm float-right m-2" type="submit" value="Cerrar Sesión">
 		</form>
 	</div>
 	
+    {% if request.resolver_match.view_name != "diarioSucursal" and request.resolver_match.view_name != "putDiario" %}
     <div class="container-fluid text-center mt-5">
         <h1>App Voz Parkinson</h1>
     </div>
+	{% endif %}
+
+
 
 	<!-- <div class="d-flex align-items-center"> -->
 		<div class="content" style="position: relative; height: 80vh;">

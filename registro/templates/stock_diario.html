@@ -2,19 +2,18 @@
 
     <div class="container text-center" id="lista">
       <div>
-        <h3>Stock Diario</h3>
-        <h4>{{ sucursal }}</h4>
-        <h6>{{ user.username }}</h6>
+        <h2>Stock Diario</h2>
+        <h5 class="mb-4">{{ sucursal }} - {{ user.username }}</h5>        
       </div>
                 
         <div class="container text-center">
-                <table class="table-responsive">
+                <table class="table-responsive text-center">
                     <thead class="thead-dark">
                         <tr>
-                            <th class="col-3">sku</th>
-                            <th class="col-3">medicamento</th>
-                            <th class="col-2 px-2">stockDiario</th>
-                            <th class="col-3">Actualizado</th>
+                            <th class="col-1">sku</th>
+                            <th class="col-4">medicamento</th>
+                            <th class="col-1 px-2">stockDiario</th>
+                            <th class="col-3 mr-2" >Actualizado</th>
                             <!-- <th>Actualizar</th> -->
                         </tr>
                     </thead>
@@ -40,9 +39,10 @@
                     </tbody>
                     
                 </table>
+                <br>
               </div>
-                <div>
-                  <button id="update-all-btn" onclick="updateAll()">Actualizar Todo</button>
+                <div style="margin-top: 15px;">
+                  <button  class="btn btn-primary" id="update-all-btn" onclick="updateAll()">Actualizar Stock</button>
                 </div>
 
     </div>
@@ -87,7 +87,7 @@ function updateAll() {
     if (i < updateBtns.length) {
       updateBtns[i].click();
       i++;
-      setTimeout(update, 200);
+      setTimeout(update, 150);
     }
   }
   update();
