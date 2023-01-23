@@ -19,23 +19,31 @@
 		<a href="{% url 'home' %}"> Inicio</i></a>
 	</div> -->
 
-	<div>
-		<form action="{% url 'signout' %}" method="post">
-			{% csrf_token %}
-			<input class="btn btn-danger btn-sm float-right m-2" type="submit" value="Cerrar Sesión">
-		</form>
+	{% if request.resolver_match.view_name != "home" and request.resolver_match.view_name != "signin" %}
+
+	<div class="row">
+		<div class="col-12 text-right justify-right">
+		<div class="d-flex justify-content-end">
+			<form action="{% url 'signout' %}" method="post">
+				{% csrf_token %}
+				<input class="btn btn-danger btn-sm float-right m-2" type="submit" value="Cerrar Sesión">
+			</form>
+		</div>
+		
+		</div>
 	</div>
+	{% endif %}
 	
-    {% if request.resolver_match.view_name != "diarioSucursal" and request.resolver_match.view_name != "putDiario" %}
+    {% if request.resolver_match.view_name == "home" or request.resolver_match.view_name == "inicioEmpleado" or request.resolver_match.view_name == "signin" or request.resolver_match.view_name == "sucursales" or request.resolver_match.view_name == "sucursales_semanal" %}
     <div class="container-fluid text-center mt-5">
         <h1>App Voz Parkinson</h1>
     </div>
 	{% endif %}
 
-
+	
 
 	<!-- <div class="d-flex align-items-center"> -->
-		<div class="content" style="position: relative; height: 80vh;">
+		<div class="content">
 			<div class="d-flex align-items-center">
 				{% block content %}
 				{% endblock %}
@@ -44,9 +52,9 @@
 		
 	 <!-- </div> -->
 	    
-   <!-- <div id="footer">
-	<footer class="footer text-faded text-center py-5 fixed-bottom">
-		<div class="container" style="position: relative; bottom: 1; width: 100%;">
+   <div id="footer">
+	<footer class="footer text-faded text-center py-5 ">
+		<div class="container">
 			<p class="m-0">
 				<a href="#" class="link">
 					<span class="fa-stack fa-lg">
@@ -74,20 +82,10 @@
 			<p class="m-0 mbt1">&copy; Proyecto 2023</p>
 		</div>
 	</footer>
-  </div> -->
+  </div>
 </body>
 </html>
 
-<!-- <style>
- .content {
-    position: relative;
-    height: 80vh;
-  }
-  #footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-</style> -->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/[email protected]/dist/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>

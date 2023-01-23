@@ -24,13 +24,15 @@ urlpatterns = [
     path('inicioGerente/', views.inicioGerente, name='inicioGerente'),
     path('signin/', views.signin, name='signin'),
     path('signup/', views.signup, name='signup'),
-    path('diario/', views.diario, name='diario'),
-    path('semanal/', views.semanal, name='semanal'),
+    # path('diario/', views.diario, name='diario'),
+    # path('semanal/', views.semanal, name='semanal'),
     path('update_stock/', views.update_stock, name='update_stock'),
     path('putDiario/', views.putDiario, name='putDiario'),
     path('sucursales/', views.get_sucursales, name='sucursales'),
+    path('sucursales_semanal/', views.get_sucursales_semanal, name='sucursales_semanal'),
     path('tipoStock/', views.tipoStock, name='tipoStock'),
-    path('diarioSucursal/', views.diarioSucursal, name='diarioSucursal'),
+    path('diarioSucursal/', views.diarioSucursal, name='diarioSucursal'),    
+    path('semanalSucursal/', views.semanalSucursal, name='semanalSucursal'),
     path('signout/', views.signout, name='signout'),
 
 ]
