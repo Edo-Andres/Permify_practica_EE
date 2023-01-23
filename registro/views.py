@@ -38,7 +38,7 @@ def tipoStock(request):
 
 
 def putDiario(request):
-    username = 'admin'
+    username = 'admin_medicamento'
     password ='admin'
     if request.method == 'POST':
         medicamento_id = request.POST.get('medicamento_id')
@@ -64,15 +64,7 @@ def putDiario(request):
             return render(request, 'home.html')
 
 
-def diario(request):
 
-    username = 'admin'
-    password ='admin'
-    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
-    response = requests.get(url,auth=(username,password))
-    data = response.json()
-    context = {'medicamentos': data}
-    return render(request, 'stock_diario.html', context)
 
 def obtener_medicamentos(request):
     if request.method == 'POST':
@@ -83,7 +75,7 @@ def obtener_medicamentos(request):
         return render(request, 'stock_diario.html', {'medicamentos': data})
 
 def diarioSucursal(request):
-    username = 'admin'
+    username = 'admin_medicamento'
     password ='admin'
     if request.method == 'POST':
         sucursal = request.POST.get('sucursal')
@@ -92,13 +84,32 @@ def diarioSucursal(request):
         data = json.loads(response.text)
         return render(request, 'stock_diario.html', {'medicamentos': data, 'sucursal':sucursal, 'user':request.user})
 
+def semanalSucursal(request):
+    username = 'admin_medicamento'
+    password ='admin'
+    if request.method == 'POST':
+        sucursal = request.POST.get('sucursal')
+        url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
+        response = requests.get(url,auth=(username,password))
+        data = json.loads(response.text)
+        return render(request, 'stock_semanal.html', {'medicamentos': data, 'sucursal':sucursal, 'user':request.user})
+    
 # def diarioSucursal(request):
 #     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
 #     response = requests.get(url)
 #     data = response.json()
 #     context = {'medicamentos': data}
 #     return render(request, 'stock_diario.html', context)
-    
+
+def diario(request):
+
+    username = 'admin_medicamento'
+    password ='admin'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    response = requests.get(url,auth=(username,password))
+    data = response.json()
+    context = {'medicamentos': data}
+    return render(request, 'stock_diario.html', context) 
 
 def semanal(request):
     return render(request, 'stock_semanal.html')
@@ -120,7 +131,7 @@ def update_stock(request):
     return redirect('diario')
 
 def get_sucursales(request):
-    username = 'admin'
+    username = 'admin_medicamento'
     password ='admin'
     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
     response = requests.get(url,auth=(username,password))
@@ -130,6 +141,16 @@ def get_sucursales(request):
         sucursales.add(item['sucursal'])
     return render(request, 'sucursales.html', {'sucursales': sucursales})
 
+def get_sucursales_semanal(request):
+    username = 'admin_medicamento'
+    password ='admin'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    response = requests.get(url,auth=(username,password))
+    data = json.loads(response.text)
+    sucursales = set()
+    for item in data:
+        sucursales.add(item['sucursal'])
+    return render(request, 'sucursales_semanal.html', {'sucursales': sucursales})
 # def my_view(request):
 #     radio_value = request.POST.get('radioGroup')
 #     if radio_value == "Diario":
