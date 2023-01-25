@@ -3,6 +3,21 @@
 <div class="container mt-5">
   {{error}}
   
+    <div class="d-flex justify-content-center">
+      <form method="post" class="mx-auto">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+        <a href="{% url 'signin' %}" class="link">Login </a>
+      </form>
+    </div>
+    
+  </div>
+
+
+<!-- <div class="container mt-5">
+  {{error}}
+  
     <div class= style="width: 75%; margin: auto;">
       <form method="post">
         {% csrf_token %}
@@ -11,7 +26,8 @@
         <a href="{% url 'signin' %}" class="link">Login </a>
       </form>
     </div>
-  </div>
+    
+  </div> -->
 
     
 {% endblock %}
