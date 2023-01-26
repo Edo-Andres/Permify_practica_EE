@@ -6,7 +6,14 @@ from django.db import IntegrityError
 import requests
 import json
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime as date
+import datetime
+
+from registro.models import Usuario, Tipo_Usuario
+from .forms import UsuarioForm
+
+from django.contrib.auth.decorators import user_passes_test
+
 
 
 
@@ -14,21 +21,44 @@ from datetime import datetime
 
 # Create your views here.
 
-def signup(request):
-    if request.method == 'GET':
-        return render(request, 'signup.html', {"form": UserCreationForm})
-    else:
-        if request.POST["password1"] == request.POST["password2"]:
-            try:
-                user = User.objects.create_user(
-                    request.POST["username"], password=request.POST["password1"])
-                user.save()
-                login(request, user)
-                return redirect('inicioEmpleado')
-            except IntegrityError:
-                return render(request, 'signup.html', {"form": UserCreationForm, "error": "Username already exists."})
+def tipo_es_gerente(user:Usuario):
+    return user.tipo_usuario.nombre_tipo_usuario == "Gerente"
 
-        return render(request, 'signup.html', {"form": UserCreationForm, "error": "Passwords did not match."})
+# @user_passes_test(tipo_es_gerente)
+def signup(request):
+    
+    data = {
+        'form': UsuarioForm(),
+        
+    }
+
+    if request.method == 'POST':
+        formulario = UsuarioForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            # resibir usuario y password para hacer un login automatico
+            user = authenticate(
+                username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
+            # login(request, user)
+            # message.success(request, 'Te has registrado correctamente')
+            return redirect(to='signin')
+        data["form"] = formulario
+
+    return render(request, 'signup.html', data)
+    # if request.method == 'GET':
+    #     return render(request, 'signup.html', {"form":UsuarioForm})
+    # else:
+    #     if request.POST["password1"] == request.POST["password2"]:
+    #         try:
+    #             user = Usuario.objects.create_user(request.POST["username"], password=request.POST["password1"], tipo_usuario= request.POST["tipo_usuario"])
+    #             user.set_password(request.POST["password1"])
+    #             user.save()
+    #             login(request, user)
+    #             return redirect('inicioEmpleado')
+    #         except IntegrityError:
+    #             return render(request, 'signup.html', {"form": UserCreationForm, "error": "Username already exists."})
+
+        # return render(request, 'signup.html', {"form": UserCreationForm, "error": "Passwords did not match."})
     
 def home(request):
     return render(request, 'home.html')
@@ -49,7 +79,7 @@ def putDiario(request):
         print(fecha_actu_stock)
         url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/{medicamento_id}/'
         new_stock = request.POST.get(f'stockDiario_{medicamento_id}')
-        now = datetime.now()
+        now = date.now()
         new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
         data = {'stockDiario': new_stock, 'fecha_actu_stock': new_fecha}
         
@@ -130,6 +160,44 @@ def inicioGerente(request):
 def update_stock(request):
     return redirect('diario')
 
+# def get_sucursales_gerente(request):
+#     username = 'admin_medicamento'
+#     password ='admin'
+#     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+#     response = requests.get(url,auth=(username,password))
+#     data = json.loads(response.text)
+#     sucursales = set()
+#     for item in data:
+#         sucursales.add(item['sucursal'])
+
+#     return render(request, 'sucursalesGerente.html', {'sucursales': sucursales})
+
+
+def get_sucursales_gerente(request):
+    username = 'admin_medicamento'
+    password ='admin'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    response = requests.get(url,auth=(username,password))
+    data = json.loads(response.text)
+    sucursales = set()
+    for item in data:
+        sucursales.add(item['sucursal'])
+    sucursales_data = []
+    for sucursal in sucursales:
+        estado = 'Ok'
+        for item in data:
+            if item['sucursal'] == sucursal:
+                fecha_actu_stock = datetime.datetime.strptime(item['fecha_actu_stock'], '%Y-%m-%dT%H:%M:%S-03:00')
+                if fecha_actu_stock.date() != datetime.datetime.now().date():
+                    estado = 'Pendiente'
+                    break
+        sucursales_data.append({'sucursal': sucursal, 'estado': estado})
+    return render (request, 'sucursalesGerente.html',  {'sucursales_data': sucursales_data})
+
+
+
+
+
 def get_sucursales(request):
     username = 'admin_medicamento'
     password ='admin'
@@ -158,19 +226,42 @@ def get_sucursales_semanal(request):
 #     elif radio_value == "Semanal":
 #         return redirect('semanal')
 
-def signin(request):
-    if request.method == 'GET':
-        return render(request, 'signin.html', {"form": AuthenticationForm})
-    else:
-        user = authenticate(
-            request, username=request.POST['username'], password=request.POST['password'])
-        if user is None:
-            return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
+# def signin(request):
+#     if request.method == 'GET':
+#         return render(request, 'signin.html', {"form": AuthenticationForm})
+#     else:
+#         user = authenticate(
+#             request, username=request.POST['username'], password=request.POST['password'])
+#         if user is None:
+#             return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
 
-        login(request, user)
-        return redirect('tipoStock')
+#         login(request, user)
+#         return redirect('tipoStock')
         
 
 def signout(request):
     logout(request)
     return redirect('home')
+
+
+def signin(request):
+    if request.method == 'GET':
+        return render(request, 'signin.html', {"form": AuthenticationForm})
+    else:
+        user:Usuario = authenticate(
+            request, username=request.POST['username'], password=request.POST['password'])
+        user.tipo_usuario
+        print(f'este es el tipo{user.tipo_usuario}')
+        
+        if user is not None:
+            login(request, user)
+            if user.tipo_usuario.nombre_tipo_usuario == 'Empleado':
+                return redirect('tipoStock')
+            if user.tipo_usuario.nombre_tipo_usuario == 'Gerente':
+                return redirect('sucursalesGerente')
+                            
+        else:
+            return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
+
+
+
