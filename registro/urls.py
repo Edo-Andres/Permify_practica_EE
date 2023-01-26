@@ -34,5 +34,6 @@ urlpatterns = [
     path('diarioSucursal/', views.diarioSucursal, name='diarioSucursal'),    
     path('semanalSucursal/', views.semanalSucursal, name='semanalSucursal'),
     path('signout/', views.signout, name='signout'),
+    path('sucursalesGerente/', views.get_sucursales_gerente, name='sucursalesGerente'),
 
 ]

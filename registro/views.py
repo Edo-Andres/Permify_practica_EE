@@ -6,10 +6,13 @@ from django.db import IntegrityError
 import requests
 import json
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime as date
+import datetime
 
 from registro.models import Usuario, Tipo_Usuario
 from .forms import UsuarioForm
+
+from django.contrib.auth.decorators import user_passes_test
 
 
 
@@ -18,6 +21,10 @@ from .forms import UsuarioForm
 
 # Create your views here.
 
+def tipo_es_gerente(user:Usuario):
+    return user.tipo_usuario.nombre_tipo_usuario == "Gerente"
+
+# @user_passes_test(tipo_es_gerente)
 def signup(request):
     
     data = {
@@ -72,7 +79,7 @@ def putDiario(request):
         print(fecha_actu_stock)
         url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/{medicamento_id}/'
         new_stock = request.POST.get(f'stockDiario_{medicamento_id}')
-        now = datetime.now()
+        now = date.now()
         new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
         data = {'stockDiario': new_stock, 'fecha_actu_stock': new_fecha}
         
@@ -153,6 +160,44 @@ def inicioGerente(request):
 def update_stock(request):
     return redirect('diario')
 
+# def get_sucursales_gerente(request):
+#     username = 'admin_medicamento'
+#     password ='admin'
+#     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+#     response = requests.get(url,auth=(username,password))
+#     data = json.loads(response.text)
+#     sucursales = set()
+#     for item in data:
+#         sucursales.add(item['sucursal'])
+
+#     return render(request, 'sucursalesGerente.html', {'sucursales': sucursales})
+
+
+def get_sucursales_gerente(request):
+    username = 'admin_medicamento'
+    password ='admin'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    response = requests.get(url,auth=(username,password))
+    data = json.loads(response.text)
+    sucursales = set()
+    for item in data:
+        sucursales.add(item['sucursal'])
+    sucursales_data = []
+    for sucursal in sucursales:
+        estado = 'Ok'
+        for item in data:
+            if item['sucursal'] == sucursal:
+                fecha_actu_stock = datetime.datetime.strptime(item['fecha_actu_stock'], '%Y-%m-%dT%H:%M:%S-03:00')
+                if fecha_actu_stock.date() != datetime.datetime.now().date():
+                    estado = 'Pendiente'
+                    break
+        sucursales_data.append({'sucursal': sucursal, 'estado': estado})
+    return render (request, 'sucursalesGerente.html',  {'sucursales_data': sucursales_data})
+
+
+
+
+
 def get_sucursales(request):
     username = 'admin_medicamento'
     password ='admin'
@@ -213,7 +258,10 @@ def signin(request):
             if user.tipo_usuario.nombre_tipo_usuario == 'Empleado':
                 return redirect('tipoStock')
             if user.tipo_usuario.nombre_tipo_usuario == 'Gerente':
-                return redirect('inicioGerente')
+                return redirect('sucursalesGerente')
                             
         else:
             return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
+
+
+
