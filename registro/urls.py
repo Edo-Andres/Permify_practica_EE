@@ -33,7 +33,9 @@ urlpatterns = [
     path('tipoStock/', views.tipoStock, name='tipoStock'),
     path('diarioSucursal/', views.diarioSucursal, name='diarioSucursal'),    
     path('semanalSucursal/', views.semanalSucursal, name='semanalSucursal'),
-    path('signout/', views.signout, name='signout'),
-    path('sucursalesGerente/', views.get_sucursales_gerente, name='sucursalesGerente'),
+    path('signout/', views.signout, name='signout'),    
+    path('tipoReporte/', views.tipoReporte, name='tipoReporte'),
+    path('reporteDiario/', views.get_reporte_diario, name='reporteDiario'),
+    path('reporteSemanal/', views.get_reporte_semanal, name='reporteSemanal'),
 
 ]
