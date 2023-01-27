@@ -1,8 +1,8 @@
 {% extends 'base.html' %} {% block content %}
     <div class="container text-center">
-        <h1>Tipo de stock a actualizar</h1><br><br>
+        <h1>Sucursales reporte</h1><br><br>
        <div>
-        <a href="{% url 'sucursales' %}" button type="button" class="btn btn-primary" >Diario</button> </a>
+        <a href="{% url 'reporteDiario' %}" button type="button" class="btn btn-primary" >Diario</button> </a>
         <button type="button" class="btn btn-primary" id="semanal" >Semanal</button>
        </div> 
     </div>
@@ -28,7 +28,7 @@
     var n = d.getDay(); //getDay devuelve el día de la semana (0-6)
     if (n == 5) { //5 es viernes
         console.log('correcto')
-        window.location.href = "{% url 'sucursales_semanal' %}";
+        window.location.href = "{% url 'reporteSemanal' %}";
     } else {
         alert("Esta acción solo está disponible los viernes");
     }

@@ -66,6 +66,9 @@ def home(request):
 def tipoStock(request):
     return render(request, 'tipoStock.html')
 
+def tipoReporte(request):
+    return render(request, 'tipoReporte.html')
+
 
 def putDiario(request):
     username = 'admin_medicamento'
@@ -160,7 +163,7 @@ def inicioGerente(request):
 def update_stock(request):
     return redirect('diario')
 
-# def get_sucursales_gerente(request):
+# def get_reporte_diario(request):
 #     username = 'admin_medicamento'
 #     password ='admin'
 #     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
@@ -170,10 +173,10 @@ def update_stock(request):
 #     for item in data:
 #         sucursales.add(item['sucursal'])
 
-#     return render(request, 'sucursalesGerente.html', {'sucursales': sucursales})
+#     return render(request, 'reporteDiario.html', {'sucursales': sucursales})
 
 
-def get_sucursales_gerente(request):
+def get_reporte_diario(request):
     username = 'admin_medicamento'
     password ='admin'
     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
@@ -192,7 +195,29 @@ def get_sucursales_gerente(request):
                     estado = 'Pendiente'
                     break
         sucursales_data.append({'sucursal': sucursal, 'estado': estado})
-    return render (request, 'sucursalesGerente.html',  {'sucursales_data': sucursales_data})
+    return render (request, 'reporteDiario.html',  {'sucursales_data': sucursales_data})
+
+
+def get_reporte_semanal(request):
+    username = 'admin_medicamento'
+    password ='admin'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    response = requests.get(url,auth=(username,password))
+    data = json.loads(response.text)
+    sucursales = set()
+    for item in data:
+        sucursales.add(item['sucursal'])
+    sucursales_data = []
+    for sucursal in sucursales:
+        estado = 'Ok'
+        for item in data:
+            if item['sucursal'] == sucursal:
+                fecha_actu_stock = datetime.datetime.strptime(item['fecha_actu_stock'], '%Y-%m-%dT%H:%M:%S-03:00')
+                if fecha_actu_stock.date() != datetime.datetime.now().date():
+                    estado = 'Pendiente'
+                    break
+        sucursales_data.append({'sucursal': sucursal, 'estado': estado})
+    return render (request, 'reporteSemanal.html',  {'sucursales_data': sucursales_data})
 
 
 
@@ -258,7 +283,7 @@ def signin(request):
             if user.tipo_usuario.nombre_tipo_usuario == 'Empleado':
                 return redirect('tipoStock')
             if user.tipo_usuario.nombre_tipo_usuario == 'Gerente':
-                return redirect('sucursalesGerente')
+                return redirect('tipoReporte')
                             
         else:
             return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
