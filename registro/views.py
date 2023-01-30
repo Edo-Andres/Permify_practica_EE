@@ -14,6 +14,9 @@ from .forms import UsuarioForm
 
 from django.contrib.auth.decorators import user_passes_test
 
+from django.contrib import messages
+
+
 
 
 
@@ -21,17 +24,42 @@ from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 
-def tipo_es_gerente(user:Usuario):
-    return user.tipo_usuario.nombre_tipo_usuario == "Gerente"
+def is_gerente(user:Usuario):
+    if user.is_authenticated:
+        if user.tipo_usuario:
+            return user.tipo_usuario.nombre_tipo_usuario == 'Gerente'
+    return False
 
-# @user_passes_test(tipo_es_gerente)
+@user_passes_test(is_gerente, login_url='signin')
+# def signup(request):
+    
+#     data = {
+#         'form': UsuarioForm(),
+        
+#     }
+
+#     if request.method == 'POST':
+#         formulario = UsuarioForm(data=request.POST)
+#         if formulario.is_valid():
+#             formulario.save()
+#             # resibir usuario y password para hacer un login automatico
+#             user = authenticate(
+#                 username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
+#             # login(request, user)
+#             # message.success(request, 'Te has registrado correctamente')
+#             return redirect(to='signin')
+#         data["form"] = formulario
+
+#     return render(request, 'signup.html', data)
+
+    # INTENTO
+
 def signup(request):
     
     data = {
         'form': UsuarioForm(),
         
     }
-
     if request.method == 'POST':
         formulario = UsuarioForm(data=request.POST)
         if formulario.is_valid():
@@ -42,9 +70,17 @@ def signup(request):
             # login(request, user)
             # message.success(request, 'Te has registrado correctamente')
             return redirect(to='signin')
+        else:
+            if 'password2' in formulario.errors:
+                messages.error(request, 'Passwords no coinciden')
         data["form"] = formulario
-
     return render(request, 'signup.html', data)
+
+
+    
+
+
+    # PRIMERO
     # if request.method == 'GET':
     #     return render(request, 'signup.html', {"form":UsuarioForm})
     # else:
@@ -275,8 +311,7 @@ def signin(request):
     else:
         user:Usuario = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
-        user.tipo_usuario
-        print(f'este es el tipo{user.tipo_usuario}')
+        
         
         if user is not None:
             login(request, user)

@@ -1,33 +1,61 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="container mt-5">
+<!-- <div class="container mt-5">
   {{error}}
   
     <div class="d-flex justify-content-center">
       <form method="post" class="mx-auto">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-        <a href="{% url 'signin' %}" class="link">Login </a>
-      </form>
-    </div>
-    
-  </div>
+        <div class="">
+          {% csrf_token %}
+          {{ form.as_p }}
+        </div>
+        
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+          <a href="{% url 'tipoReporte' %}" class="link">volver </a>
+        </div>
 
-
-<!-- <div class="container mt-5">
-  {{error}}
-  
-    <div class= style="width: 75%; margin: auto;">
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-        <a href="{% url 'signin' %}" class="link">Login </a>
       </form>
     </div>
     
   </div> -->
 
-    
+  
+  <form method="post" class="mx-auto">
+    <div class="">
+      
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          {% if field.name == "tipo_usuario" %}
+            <label for="{{ field.name }}">{{ field.label }}</label>
+            <select class="form-control" name="{{ field.name }}" id="{{ field.name }}">
+              {% for choice in field.field.choices %}
+                <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+              {% endfor %}
+            </select>
+          {% else %}
+            <label for="{{ field.name }}">{{ field.label }}</label>
+            <input class="form-control" type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.name }}" value="{{ field.value }}">
+          {% endif %}
+        </div>
+      {% endfor %}
+          <!-- Mesaje error -->
+              <div class="text-center">
+                {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+        <a href="{% url 'tipoReporte' %}" class="link">volver </a>
+      </div>
+    </div>
+
+  
+
+     
 {% endblock %}

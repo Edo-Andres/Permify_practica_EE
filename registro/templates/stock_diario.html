@@ -41,9 +41,12 @@
                 </table>
                 <br>
               </div>
+                
                 <div style="margin-top: 15px;">
                   <button  class="btn btn-primary" id="update-all-btn" onclick="updateAll()">Actualizar Stock</button>
                 </div>
+
+                <div id="loader" style="display: none; margin-top: 15px;">Actualizando Stock...</div>
 
     </div>
 
@@ -79,8 +82,26 @@
     
 <script>
 
+// function updateAll() {
+//   const updateBtns = document.querySelectorAll('.update-btn');
+//   let i = 0;
+
+//   function update() {
+//     if (i < updateBtns.length) {
+//       updateBtns[i].click();
+//       i++;
+//       setTimeout(update, 150);
+//     }
+//   }
+//   update();
+// }
+
 function updateAll() {
   const updateBtns = document.querySelectorAll('.update-btn');
+  const loader = document.getElementById('loader');
+
+  loader.style.display = 'block'; // mostrar el loader
+
   let i = 0;
 
   function update() {
@@ -88,33 +109,39 @@ function updateAll() {
       updateBtns[i].click();
       i++;
       setTimeout(update, 150);
-    }
+    } else {
+      loader.style.display = 'none'; // ocultar el loader una vez terminado
+      alert('Stock actualizado');
+      window.location.href = "{% url 'tipoStock' %}"
+      }
+      
   }
+
   update();
 }
 
 
 
-  async function updateStock(medicamento_id, new_stock) {
-      const url = `https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${medicamento_id}/`;
-      const data = {stockDiario: new_stock};
-      try {
-          const response = await fetch(url, {
-              method: 'PUT',
-              body: JSON.stringify(data),
-              headers: {
-                  'Content-Type': 'application/json'
-              }
-          });
-          if (response.status === 200) {
-              console.log('Stock actualizado.');
-          } else {
-              console.error('Error al actualizar el stock.');
-          }
-      } catch (error) {
-          console.error(error);
-      }
-  }
+  // async function updateStock(medicamento_id, new_stock) {
+  //     const url = `https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${medicamento_id}/`;
+  //     const data = {stockDiario: new_stock};
+  //     try {
+  //         const response = await fetch(url, {
+  //             method: 'PUT',
+  //             body: JSON.stringify(data),
+  //             headers: {
+  //                 'Content-Type': 'application/json'
+  //             }
+  //         });
+  //         if (response.status === 200) {
+  //             console.log('Stock actualizado.');
+  //         } else {
+  //             console.error('Error al actualizar el stock.');
+  //         }
+  //     } catch (error) {
+  //         console.error(error);
+  //     }
+  // }
 </script>
     
     <!-- <script>
