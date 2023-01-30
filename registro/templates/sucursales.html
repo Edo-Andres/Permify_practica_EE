@@ -5,7 +5,7 @@
     <div>
         <label>Selecciona Sucursal:</label>
     </div>
-    <form action="{% url 'diarioSucursal' %}" method="POST">
+    <form method="POST">
         {% csrf_token %}
         <select name="sucursal">
             {% for sucursal in sucursales %}
@@ -15,7 +15,9 @@
         <br><br><br>
 
         <input class="btn btn-primary" type="submit" value="Enviar">
+        <a href="#"></a>
     </form>
+     
     
 </div>
 
