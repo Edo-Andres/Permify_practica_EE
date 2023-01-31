@@ -274,7 +274,7 @@ def get_sucursales(request):
         sucursales.add(item['sucursal'])
     if request.method == "POST":
         sucursal = request.POST.get("sucursal") 
-        return redirect("put_registros",sucursal)   
+        return redirect("put_registros", sucursal)   
     return render(request, 'sucursales.html', {'sucursales': sucursales})
 
 def get_sucursales_semanal(request):
@@ -336,6 +336,7 @@ def put_registros(request, sucursal):
 
     url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
     print(url)
+    
     username = "admin"
     password = "admin"
     response = requests.get(url,auth=(username,password))
@@ -363,4 +364,4 @@ def put_registros(request, sucursal):
         
         return redirect(to ="sucursales")
         #return redirect('tipoReporte')
-    return render(request, "put_registros.html", data)
+    return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
