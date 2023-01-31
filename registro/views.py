@@ -347,18 +347,20 @@ def put_registros(request, sucursal):
     array_stocks = []
     if request.method == 'POST':
         url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
-        print(url)
+        
         #mostrar todos los elementos del request
         for key, value in request.POST.items():
-            print('Key: %s' % (key) ) 
-            print('Value %s' % (value) )
+            #print('Key: %s' % (key) ) 
+            #print('Value %s' % (value) )
             #agrego al array los valores
             array_stocks.append(value)
         #elimino el primer valor del array por que el tocken del formulario
-        print(array_stocks)
+       
         array_stocks.pop(0)
-        print(array_stocks)
-        response = requests.put(url, json={"stockDiario": array_stocks}, auth = (username, password))
-        print(response.status_code)
+        now = date.now()
+        new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
+        response = requests.put(url, json={"stockDiario": array_stocks, "fecha_actu_stock":new_fecha}, auth = (username, password))
+        
+        return redirect(to ="sucursales")
         #return redirect('tipoReporte')
     return render(request, "put_registros.html", data)

@@ -30,24 +30,18 @@
                 </tr>
             </tbody>
             {% endfor %}
-                        <input class="inputs" type="submit" value="Enviar el formulario">
+                        <input class="inputs" type="submit" onclick="reload()" value="Enviar el formulario">
                     </form>
     </table>
 </div>
 
-<!-- <form method="post">
-    {% csrf_token %}
-    <input class="inputs" name="stock1" type="text">
-    <input class="inputs" name="stock2" type="text">
-    <input class="inputs" name="stock3" type="text">
-    <input class="inputs" type="submit" value="Enviar el formulario">
-  
-</form> -->
-
-
-
 <script src="{% static 'js/ajax_post.js' %}"></script>
-
+<script>
+    function reload() {
+        console.log("precione el boton");
+        window.location.reload()
+    }
+</script>
 
 {% endblock %}  
 
