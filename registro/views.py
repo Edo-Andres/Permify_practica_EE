@@ -120,7 +120,7 @@ def putDiario(request):
     #     print(medicamento_id)   
     #     print(sucursal)
     #     print(fecha_actu_stock)
-    #     url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/{medicamento_id}/'
+    #     url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full{medicamento_id}/'
     #     new_stock = request.POST.get(f'stockDiario_{medicamento_id}')
     #     now = date.now()
     #     new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -128,7 +128,7 @@ def putDiario(request):
         
     #     response = requests.put(url, data=data,auth=(username,password))
     #     if response.status_code == 200:
-    #         url2 = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
+    #         url2 = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}'
     #         response2 = requests.get(url2,auth=(username,password))
     #         data2 = json.loads(response2.text)
     #         return render(request, 'stock_diario.html', {'medicamentos': data2, 'sucursal':sucursal})
@@ -142,7 +142,7 @@ def putDiario(request):
 def obtener_medicamentos(request):
     if request.method == 'POST':
         sucursal = request.POST.get('sucursal')
-        url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
+        url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}'
         response = requests.get(url)
         data = json.loads(response.text)
         return render(request, 'stock_diario.html', {'medicamentos': data})
@@ -162,13 +162,13 @@ def semanalSucursal(request):
     password ='admin'
     if request.method == 'POST':
         sucursal = request.POST.get('sucursal')
-        url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/?sucursal={sucursal}'
+        url = f'https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}'
         response = requests.get(url,auth=(username,password))
         data = json.loads(response.text)
         return render(request, 'stock_semanal.html', {'medicamentos': data, 'sucursal':sucursal, 'user':request.user})
     
 # def diarioSucursal(request):
-#     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+#     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full'
 #     response = requests.get(url)
 #     data = response.json()
 #     context = {'medicamentos': data}
@@ -178,7 +178,7 @@ def diario(request):
 
     username = 'admin_medicamento'
     password ='admin'
-    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full'
     response = requests.get(url,auth=(username,password))
     data = response.json()
     context = {'medicamentos': data}
@@ -206,7 +206,7 @@ def update_stock(request):
 # def get_reporte_diario(request):
 #     username = 'admin_medicamento'
 #     password ='admin'
-#     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+#     url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full'
 #     response = requests.get(url,auth=(username,password))
 #     data = json.loads(response.text)
 #     sucursales = set()
@@ -219,7 +219,7 @@ def update_stock(request):
 def get_reporte_diario(request):
     username = 'admin_medicamento'
     password ='admin'
-    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full'
     response = requests.get(url,auth=(username,password))
     data = json.loads(response.text)
     sucursales = set()
@@ -241,7 +241,7 @@ def get_reporte_diario(request):
 def get_reporte_semanal(request):
     username = 'admin_medicamento'
     password ='admin'
-    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full'
     response = requests.get(url,auth=(username,password))
     data = json.loads(response.text)
     sucursales = set()
@@ -280,7 +280,7 @@ def get_sucursales(request):
 def get_sucursales_semanal(request):
     username = 'admin_medicamento'
     password ='admin'
-    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full/'
+    url = 'https://vozparkinson.pythonanywhere.com/apis/medicamento_full'
     response = requests.get(url,auth=(username,password))
     data = json.loads(response.text)
     sucursales = set()

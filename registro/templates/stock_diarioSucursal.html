@@ -55,7 +55,7 @@
 
 <script>
   async function updateStock(medicamento_id, new_stock) {
-      const url = `https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${medicamento_id}/`;
+      const url = `https://vozparkinson.pythonanywhere.com/apis/medicamento_full${medicamento_id}/`;
       const data = {stockDiario: new_stock};
       try {
           const response = await fetch(url, {
@@ -86,7 +86,7 @@
   console.log(stockDiario)
 
   // Enviar petición PUT a la API utilizando fetch
-  fetch(`https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${id}/`, {
+  fetch(`https://vozparkinson.pythonanywhere.com/apis/medicamento_full${id}/`, {
     method: 'PUT',
     body: JSON.stringify({stockDiario: stockDiario}),
     headers: {
@@ -119,7 +119,7 @@
   console.log(stockDiario)
 
   // Enviar petición PUT a la API utilizando axios
-    axios.put(`https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${id}/`, {
+    axios.put(`https://vozparkinson.pythonanywhere.com/apis/medicamento_full${id}/`, {
     stockDiario: stockDiario
   })
   .then(response => {
