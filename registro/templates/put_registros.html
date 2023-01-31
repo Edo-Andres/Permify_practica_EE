@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block content %}
+{% load static %}
+<div class="table-responsive">
+    <table class="table table-striped table-bordered mx-auto">
+        <thead>
+            <tr>
+                <th>Sucursal</th>
+                <th>Sku</th>
+                <th>nombre medicamento</th>
+                <th>stock</th>
+                <th>fecha actualizacion stock</th>
+        
+            </tr>
+        </thead>
+        
+        {% for data in json_response  %}
+        <tbody>
+            
+            <tr>
+                <td>{{data.sucursal}}</td>
+                <td>{{data.sku}}</td>
+                <td>{{data.nombre_medicamento}}</td>
+                
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input class="inputs" name="stock_{{data.id_medicamento}}" type="text" value="{{data.stockDiario}}">             
+                </td>
+                <td>{{data.fecha_actu_stock}}</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+                        <input class="inputs" type="submit" onclick="reload()" value="Enviar el formulario">
+                    </form>
+    </table>
+</div>
+
+<script src="{% static 'js/ajax_post.js' %}"></script>
+<script>
+    function reload() {
+        console.log("precione el boton");
+        window.location.reload()
+    }
+</script>
+
+{% endblock %}  
+
