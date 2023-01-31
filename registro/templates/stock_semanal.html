@@ -93,28 +93,6 @@ function updateAll() {
   update();
 }
 
-
-
-  async function updateStock(medicamento_id, new_stock) {
-      const url = `https://vozparkinson.pythonanywhere.com/apis/medicamento_full/${medicamento_id}/`;
-      const data = {stockDiario: new_stock};
-      try {
-          const response = await fetch(url, {
-              method: 'PUT',
-              body: JSON.stringify(data),
-              headers: {
-                  'Content-Type': 'application/json'
-              }
-          });
-          if (response.status === 200) {
-              console.log('Stock actualizado.');
-          } else {
-              console.error('Error al actualizar el stock.');
-          }
-      } catch (error) {
-          console.error(error);
-      }
-  }
 </script>
     
 {% endblock %}
