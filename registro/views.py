@@ -332,6 +332,43 @@ def signin(request):
 
 
 
+# def put_registros(request, sucursal):
+
+#     url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
+#     print(url)
+    
+#     username = "admin"
+#     password = "admin"
+#     response = requests.get(url,auth=(username,password))
+#     json_response = json.loads(response.text)
+
+#     data = {
+#         "json_response" : json_response
+#     }
+#     array_stocks = []
+#     if request.method == 'POST':
+#         url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
+        
+#         #mostrar todos los elementos del request
+#         for key, value in request.POST.items():
+#             #print('Key: %s' % (key) ) 
+#             #print('Value %s' % (value) )
+#             #agrego al array los valores
+#             array_stocks.append(value)
+#         #elimino el primer valor del array por que el tocken del formulario
+       
+#         array_stocks.pop(0)
+#         now = date.now()
+#         new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
+#         response = requests.put(url, json={"stockDiario": array_stocks, "fecha_actu_stock":new_fecha}, auth = (username, password))
+        
+#         return redirect(to ="sucursales")
+#         #return redirect('tipoReporte')
+#     return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+# from django.http import Http404
+
 def put_registros(request, sucursal):
 
     url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
@@ -346,6 +383,16 @@ def put_registros(request, sucursal):
         "json_response" : json_response
     }
     array_stocks = []
+    paginator = Paginator(json_response, 5)
+    page = request.GET.get('page')
+
+    try:
+        json_response = paginator.page(page)
+    except PageNotAnInteger:
+        json_response = paginator.page(1)
+    except EmptyPage:
+        json_response = paginator.page(paginator.num_pages)
+
     if request.method == 'POST':
         url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
         
@@ -365,3 +412,47 @@ def put_registros(request, sucursal):
         return redirect(to ="sucursales")
         #return redirect('tipoReporte')
     return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
+
+
+# def put_registros(request, sucursal):
+
+#     url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
+#     print(url)
+#     page = request.GET.get('page', 1)
+#     username = "admin"
+#     password = "admin"
+#     response = requests.get(url,auth=(username,password))
+#     json_response = json.loads(response.text)
+
+#     try:
+#         paginator = Paginator(json_response)
+#         json_response = paginator.page(page)
+#     except:
+#         raise Http404
+
+#     data = {
+#         "entity" : json_response,
+#         "paginator" : paginator
+#     }
+#     array_stocks = []
+#     if request.method == 'POST':
+#         url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
+        
+#         #mostrar todos los elementos del request
+#         for key, value in request.POST.items():
+#             #print('Key: %s' % (key) ) 
+#             #print('Value %s' % (value) )
+#             #agrego al array los valores
+#             array_stocks.append(value)
+#         #elimino el primer valor del array por que el tocken del formulario
+       
+#         array_stocks.pop(0)
+#         now = date.now()
+#         new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
+#         response = requests.put(url, json={"stockDiario": array_stocks, "fecha_actu_stock":new_fecha}, auth = (username, password))
+        
+#         return redirect(to ="sucursales")
+#         #return redirect('tipoReporte')
+#     return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
+
+    
