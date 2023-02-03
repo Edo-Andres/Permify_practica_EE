@@ -42,11 +42,39 @@
                         
     </div>     
                         <div class="mt-2">
-                            <input class="inputs submit-button" type="submit" onclick="reload()" value="Actualizar">
+                            <input class="inputs submit-button" type="submit" value="Actualizar">
                         </div>      
-            </form>
+            </form> 
 
 
+            <div class="mt-3">
+              <input class="inputs submit-button"type="submit" name="anterior" value="Anterior">
+              <input class="inputs submit-button"type="submit" name="siguiente" value="Siguiente">
+            </div>
+
+        <!-- Botones de paginación -->
+  <!-- <div class="d-flex justify-content-center mt-3">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if json_response.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ json_response.previous_page_number }}">Anterior</a>
+        </li>
+        {% endif %}
+        <li class="page-item disabled">
+          <span class="page-link">Página {{ json_response.number }} de {{ json_response.paginator.num_pages }}</span>
+        </li>
+        {% if json_response.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ json_response.next_page_number }}">Siguiente</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div> -->
+  
+</div>
+    
 </div>
 
   <style>
