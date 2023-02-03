@@ -274,6 +274,7 @@ def get_sucursales(request):
         sucursales.add(item['sucursal'])
     if request.method == "POST":
         sucursal = request.POST.get("sucursal") 
+        
         return redirect("put_registros", sucursal)   
     return render(request, 'sucursales.html', {'sucursales': sucursales})
 
@@ -369,72 +370,30 @@ def signin(request):
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # from django.http import Http404
 
-def put_registros(request, sucursal):
-
-    url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
-    print(url)
-    
-    username = "admin"
-    password = "admin"
-    response = requests.get(url,auth=(username,password))
-    json_response = json.loads(response.text)
-
-    data = {
-        "json_response" : json_response
-    }
-    array_stocks = []
-    paginator = Paginator(json_response, 5)
-    page = request.GET.get('page')
-
-    try:
-        json_response = paginator.page(page)
-    except PageNotAnInteger:
-        json_response = paginator.page(1)
-    except EmptyPage:
-        json_response = paginator.page(paginator.num_pages)
-
-    if request.method == 'POST':
-        url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
-        
-        #mostrar todos los elementos del request
-        for key, value in request.POST.items():
-            #print('Key: %s' % (key) ) 
-            #print('Value %s' % (value) )
-            #agrego al array los valores
-            array_stocks.append(value)
-        #elimino el primer valor del array por que el tocken del formulario
-       
-        array_stocks.pop(0)
-        now = date.now()
-        new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
-        response = requests.put(url, json={"stockDiario": array_stocks, "fecha_actu_stock":new_fecha}, auth = (username, password))
-        
-        return redirect(to ="sucursales")
-        #return redirect('tipoReporte')
-    return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
-
-
 # def put_registros(request, sucursal):
 
 #     url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
 #     print(url)
-#     page = request.GET.get('page', 1)
+    
 #     username = "admin"
 #     password = "admin"
 #     response = requests.get(url,auth=(username,password))
 #     json_response = json.loads(response.text)
 
-#     try:
-#         paginator = Paginator(json_response)
-#         json_response = paginator.page(page)
-#     except:
-#         raise Http404
-
 #     data = {
-#         "entity" : json_response,
-#         "paginator" : paginator
+#         "json_response" : json_response
 #     }
 #     array_stocks = []
+#     paginator = Paginator(json_response, 5)
+#     page = request.GET.get('page')
+
+#     try:
+#         json_response = paginator.page(page)
+#     except PageNotAnInteger:
+#         json_response = paginator.page(1)
+#     except EmptyPage:
+#         json_response = paginator.page(paginator.num_pages)
+
 #     if request.method == 'POST':
 #         url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
         
@@ -455,4 +414,76 @@ def put_registros(request, sucursal):
 #         #return redirect('tipoReporte')
 #     return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
 
+
+
+#PRUEBAS NUEVA API
+
+def put_registros(request, sucursal):
+    url = f"https://vozparkinson.pythonanywhere.com/apis/medicamento_full?sucursal={sucursal}"
+    base_url = "https://vozparkinson.pythonanywhere.com/apis/medicamento_full"
+
     
+    username = "admin"
+    password = "admin"
+    response = requests.get(url,auth=(username,password))
+    json_response = json.loads(response.text)
+
+    data = {
+        "json_response" : json_response
+    }
+    array_stocks = []
+    page=1
+    if request.method == 'POST':
+        url = f"{base_url}?page={page}&sucursal={sucursal}"
+        
+        #mostrar todos los elementos del request
+        for key, value in request.POST.items():
+            #print('Key: %s' % (key) ) 
+            #print('Value %s' % (value) )
+            #agrego al array los valores
+            array_stocks.append(value)
+        #elimino el primer valor del array por que el tocken del formulario
+       
+        array_stocks.pop(0)
+        now = date.now()
+        new_fecha = now.strftime("%Y-%m-%d %H:%M:%S")
+        response = requests.put(url, json={"stockDiario": array_stocks, "fecha_actu_stock":new_fecha}, auth = (username, password))
+        
+        return redirect(to ="sucursales")
+        #return redirect('tipoReporte')
+    return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
+
+    #########
+
+    # if request.method == 'POST':
+    #     # Datos a actualizar en cada petición PUT
+    #     data = {
+    #     "stockDiario": [100, 200, 300],
+    #     "fecha_actu_stock": "2022-12-31"
+    #     }
+
+
+    #     # Número de páginas a procesar
+    #     num_pages = 3
+
+    #     # Recorre cada página
+    #     for page in range(1, num_pages + 1):
+    #         # Arma la URL completa con el número de página y la sucursal
+    #         url = f"{base_url}?page={page}&sucursal={sucursal}"
+
+    #         # Realiza la petición PUT
+    #         response = requests.put(url, data=data)
+
+    #         # Verifica si la petición fue exitosa
+    #         if response.status_code == 200:
+    #             print(f"Página {page} actualizada con éxito")
+    #         else:
+    #             print(f"Error al actualizar página {page}: {response.text}")
+    #     return render(request, 'put_registros.html', {'json_response': json_response, 'sucursal': sucursal})
+
+
+
+
+
+
+
