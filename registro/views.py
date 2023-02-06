@@ -303,6 +303,9 @@ def get_sucursales_semanal(request):
     sucursales = set()
     for item in data:
         sucursales.add(item['sucursal'])
+        if request.method == "POST":
+            sucursal= request.POST.get("sucursal")
+            return redirect("put_registros_semanal", sucursal)
     return render(request, 'sucursales_semanal.html', {'sucursales': sucursales})
 # def my_view(request):
 #     radio_value = request.POST.get('radioGroup')
