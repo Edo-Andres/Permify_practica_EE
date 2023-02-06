@@ -38,5 +38,6 @@ urlpatterns = [
     path('reporteDiario/', views.get_reporte_diario, name='reporteDiario'),
     path('reporteSemanal/', views.get_reporte_semanal, name='reporteSemanal'),
     path('put_registros/<str:sucursal>/', views.put_registros, name='put_registros'),
+    path('put_registros_semanal/<str:sucursal>/', views.put_registros_semanal, name='put_registros_semanal'),
 
 ]
