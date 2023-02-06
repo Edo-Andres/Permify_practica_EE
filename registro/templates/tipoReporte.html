@@ -31,7 +31,7 @@
     document.getElementById("semanal").addEventListener("click", function() {
     var d = new Date();
     var n = d.getDay(); //getDay devuelve el día de la semana (0-6)
-    if (n == 5) { //5 es viernes
+    if (n == 1) { //5 es viernes
         console.log('correcto')
         window.location.href = "{% url 'reporteSemanal' %}";
     } else {

@@ -1,0 +1,87 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container text-center" id="lista">
+    <div>
+      <h2>Stock Semanal</h2>
+      <h5 class="mb-4">{{ sucursal }} - {{ user.username }}</h5>
+    </div>
+  
+  <div class="table-responsive">
+      <table class="table table-striped table-bordered mx-auto">
+          <thead>
+               <tr>
+                  <th class="col-1">sku</th>
+                  <th class="col-4">medicamento</th>
+                  <th class="col-1 px-2">stockDiario</th>
+                  <th class="col-3 mr-2">Actualizado</th>
+              </tr>
+          </thead>
+          <tbody>
+              <form method="post">
+                          {% csrf_token %}
+          {% for data in json_response  %}      
+  
+              <tr>
+                  <!-- <td>{{data.sucursal}}</td> -->
+                  <td>{{data.sku}}</td>
+                  <td>{{data.nombre_medicamento}}</td>
+  
+                  <td>
+  
+                          <input class="inputs form-control text-center" name="stock_{{data.id_medicamento}}" type="text" value="{{data.stockDiario}}">             
+                  </td>
+                  <td>{{data.fecha_actu_stock}}</td>
+                  </tr>
+  
+              {% endfor %}
+  
+              </tbody>
+  
+      </table>
+  
+      </div>     
+                          <div class="mt-2">
+                              <input class="inputs submit-button" type="submit" onclick="reload()" value="Actualizar">
+                          </div>      
+              </form>
+  
+  
+  </div>
+  <style>
+        @media only screen and (max-width: 600px) {
+        .btn-primary {
+                width: 80%;
+                margin-top: 10px;
+            }
+        }
+
+        .update-btn {
+        display: none;
+        }
+
+        #lista{
+        margin-bottom: 10%;
+
+        }
+        h3{
+        padding: 0;
+        margin: 0;      
+        }
+        h4{
+          margin-top: 0;
+          padding: 0;
+        } 
+    </style>
+
+
+
+<!-- <script src="{% static 'js/ajax_post.js' %}"></script>
+<script>
+    function reload() {
+        console.log("precione el boton");
+        window.location.reload()
+    }
+</script> -->
+
+{% endblock %}  
+
